@@ -1,9 +1,9 @@
 <template>
-  <section class="testimonials" id="testimonials">
-    <div class="container">
-      <h2 class="section-title">Testimonials</h2>
+  <TestimonialsRoot id="testimonials">
+    <TestimonialsContainer>
+      <SectionTitle>Testimonials</SectionTitle>
 
-      <div class="testimonials-grid">
+      <TestimonialsGrid>
         <TestimonialCard
           v-for="testimonial in testimonials"
           :key="testimonial.name"
@@ -12,23 +12,87 @@
           :role="testimonial.role"
           :text="testimonial.text"
         />
-      </div>
+      </TestimonialsGrid>
 
-      <div class="testimonial-dots">
-        <span
+      <DotsRow>
+        <Dot
           v-for="index in testimonials.length"
           :key="index"
-          :class="['dot', { active: activeDot === index - 1 }]"
+          :class="{ active: activeDot === index - 1 }"
           @click="activeDot = index - 1"
-        ></span>
-      </div>
-    </div>
-  </section>
+        />
+      </DotsRow>
+    </TestimonialsContainer>
+  </TestimonialsRoot>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import styled from 'vue3-styled-components'
 import TestimonialCard from './TestimonialCard.vue'
+
+const TestimonialsRoot = styled.section`
+  padding: 100px 0;
+  background-color: var(--white);
+`
+
+const TestimonialsContainer = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+`
+
+const SectionTitle = styled.h2`
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 50px;
+  line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+`
+
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto 40px;
+  }
+`
+
+const DotsRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`
+
+const Dot = styled.span`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #d8d8d8;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &.active {
+    background-color: var(--pink-primary);
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    background-color: var(--pink-primary);
+    opacity: 0.7;
+  }
+`
 
 const activeDot = ref(0)
 
